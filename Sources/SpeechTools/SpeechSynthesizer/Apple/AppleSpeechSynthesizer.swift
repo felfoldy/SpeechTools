@@ -33,6 +33,23 @@ public final class AppleSpeechSynthesizer: SpeechSynthesizer {
         
         try await processor.waitUntilFinish(avUtterance)
     }
+    
+    public static func voices(language: Language) -> [AVSpeechSynthesisVoice] {
+        AVSpeechSynthesisVoice.speechVoices()
+            .filter { voice in
+                voice.language
+                    .starts(with: language.code)
+            }
+    }
+}
+
+public extension AppleSpeechSynthesizer {
+    convenience init?(language: Language) {
+        guard let voice = AVSpeechSynthesisVoice(language: language.code) else {
+            return nil
+        }
+        self.init(voice: voice)
+    }
 }
 
 // MARK: - AVSpeechUtterance conversion

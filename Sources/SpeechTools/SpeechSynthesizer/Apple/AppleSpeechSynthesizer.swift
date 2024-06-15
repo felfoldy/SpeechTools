@@ -17,7 +17,7 @@ public final class AppleSpeechSynthesizer: SpeechSynthesizer {
     public init(voice: AVSpeechSynthesisVoice) {
         self.voice = voice
         synthesizer.delegate = processor
-        log.info("Initialized AppleSpeechSynthesizer with voice: \(voice.identifier, privacy: .public)")
+        log.info("Initialized AppleSpeechSynthesizer with voice: \(voice.identifier)")
     }
     
     public func speak(utterance: any Utterance) async throws {

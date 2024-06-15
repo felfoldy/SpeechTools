@@ -20,26 +20,32 @@ extension AppleSpeechSynthesizer {
         }
         
         func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
-            log.info("Started speech: \(utterance.speechString, privacy: .public)")
+            log.info("Started speech: \(utterance.speechString)")
         }
         
         @available(iOS 17.0, *)
         func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeak marker: AVSpeechSynthesisMarker, utterance: AVSpeechUtterance) {
-            log.debug("Speak \(marker.phoneme, privacy: .public)")
+            if !marker.phoneme.isEmpty {
+                log.debug("Speak \(marker.phoneme)")
+            } else {
+                let nsString = NSString(string: utterance.speechString)
+                let substring = nsString.substring(with: marker.textRange)
+                log.debug("Speak \(substring)")
+            }
         }
         
         func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
             activeContinuations[utterance.hash]?.resume(throwing: SpeechError.didCancel)
             activeContinuations[utterance.hash] = nil
             
-            log.warning("Cancelled speech: \(utterance.speechString, privacy: .public)")
+            log.warning("Cancelled speech: \(utterance.speechString)")
         }
         
         func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
             activeContinuations[utterance.hash]?.resume()
             activeContinuations[utterance.hash] = nil
             
-            log.info("Finished speech: \(utterance.speechString, privacy: .public)")
+            log.info("Finished speech: \(utterance.speechString)")
         }
     }
 }

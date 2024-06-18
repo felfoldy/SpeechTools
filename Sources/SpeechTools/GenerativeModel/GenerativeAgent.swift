@@ -7,20 +7,21 @@
 
 import Foundation
 
-protocol MessageContent {}
-extension String: MessageContent {}
+enum MessageContent {
+    case text(String)
+}
 
 struct ChatMessage {
     let role: Role
     let content: MessageContent
     
     enum Role: String {
-        case system, user, assistant
+        case user, model
     }
 }
 
 protocol GPTModel {
-    func fetchResponse(history: [ChatMessage]) async throws -> ChatMessage
+    func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage
 }
 
 protocol HistoryManagedGPTModel: GPTModel {
@@ -30,16 +31,21 @@ protocol HistoryManagedGPTModel: GPTModel {
 @MainActor
 final class GenerativeAgent: ObservableObject {
     var model: GPTModel
+    let instructions: String
     @Published var history: [ChatMessage]
     
-    init(model: GPTModel, history: [ChatMessage] = []) {
+    init(model: GPTModel, instructions: String, history: [ChatMessage] = []) {
         self.model = model
+        self.instructions = instructions
         self.history = history
     }
     
     @discardableResult
     func generateResponse() async throws -> ChatMessage {
-        let result = try await model.fetchResponse(history: history)
+        let result = try await model
+            .fetchResponse(instructions: instructions,
+                           history: history)
+
         try await updateHistory(with: result)
         return result
     }

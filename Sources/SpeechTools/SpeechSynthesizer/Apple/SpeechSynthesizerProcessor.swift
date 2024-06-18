@@ -24,6 +24,7 @@ extension AppleSpeechSynthesizer {
         }
         
         @available(iOS 17.0, *)
+        @available(macOS 14.0, *)
         func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeak marker: AVSpeechSynthesisMarker, utterance: AVSpeechUtterance) {
             if !marker.phoneme.isEmpty {
                 log.debug("Speak \(marker.phoneme)")

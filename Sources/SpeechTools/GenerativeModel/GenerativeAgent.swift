@@ -7,41 +7,43 @@
 
 import Foundation
 
-enum MessageContent {
+public enum MessageContent {
     case text(String)
 }
 
-struct ChatMessage {
-    let role: Role
-    let content: MessageContent
+public struct ChatMessage {
+    public let role: Role
+    public let content: MessageContent
     
-    enum Role: String {
+    public enum Role: String {
         case user, model
     }
 }
 
-protocol GPTModel {
+public protocol GPTModel {
     func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage
 }
 
-protocol HistoryManagedGPTModel: GPTModel {
+public protocol HistoryManagedGPTModel: GPTModel {
     func fetchHistory() async throws -> [ChatMessage]
 }
 
 @MainActor
-final class GenerativeAgent: ObservableObject {
-    var model: GPTModel
+public final class GenerativeAgent: ObservableObject {
+    public var model: GPTModel
     let instructions: String
-    @Published var history: [ChatMessage]
+
+    @Published
+    public var history: [ChatMessage]
     
-    init(model: GPTModel, instructions: String, history: [ChatMessage] = []) {
+    public init(model: GPTModel, instructions: String, history: [ChatMessage] = []) {
         self.model = model
         self.instructions = instructions
         self.history = history
     }
     
     @discardableResult
-    func generateResponse() async throws -> ChatMessage {
+    public func generateResponse() async throws -> ChatMessage {
         let result = try await model
             .fetchResponse(instructions: instructions,
                            history: history)
@@ -50,7 +52,7 @@ final class GenerativeAgent: ObservableObject {
         return result
     }
     
-    func updateHistory(with message: ChatMessage? = nil) async throws {
+    public func updateHistory(with message: ChatMessage? = nil) async throws {
         if let historyModel = model as? HistoryManagedGPTModel {
             let newHistory = try await historyModel.fetchHistory()
 

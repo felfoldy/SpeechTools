@@ -47,7 +47,12 @@ public struct ChatCompletion: GPTModel {
     
     private let endpoint = "https://api.openai.com/v1/chat/completions"
     
-    func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage {
+    public init(apiKey: String, model: ChatGPTModel) {
+        self.apiKey = apiKey
+        self.model = model
+    }
+    
+    public func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage {
         let url = URL(string: endpoint)!
         var request = URLRequest(url: url)
 
@@ -78,7 +83,7 @@ public struct ChatCompletion: GPTModel {
         request.httpBody = try JSONEncoder().encode(requestBody)
         
         // Request.
-        let (data, response) = try await URLSession.shared
+        let (data, _) = try await URLSession.shared
             .data(for: request)
         
         let decoder = JSONDecoder()

@@ -11,4 +11,5 @@ typealias Log = Logger
 
 extension Log {
     static let speechSynthesis = Logger(subsystem: "com.felfoldy.SpeechTools", category: "SpeechSynthesis")
+    static let generativeAgent = Logger(subsystem: "com.felfoldy.SpeechTools", category: "GenerativeAgent")
 }

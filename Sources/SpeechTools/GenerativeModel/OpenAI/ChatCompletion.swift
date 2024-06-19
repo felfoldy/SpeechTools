@@ -106,7 +106,7 @@ public struct ChatCompletion: GPTModel {
     }
 }
 
-extension GPTModel where Self == ChatCompletion {
+public extension GPTModel where Self == ChatCompletion {
     static func chat(apiKey: String, model: ChatGPTModel) -> ChatCompletion {
         ChatCompletion(apiKey: apiKey, model: model)
     }

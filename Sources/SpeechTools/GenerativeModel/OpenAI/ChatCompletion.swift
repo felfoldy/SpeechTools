@@ -7,6 +7,8 @@
 
 import Foundation
 
+private let log = Log.generativeAgent
+
 public enum ChatGPTModel: String, Codable {
     case gpt3_5 = "gpt-3.5-turbo"
     case gpt4 = "gpt-4o"
@@ -92,14 +94,21 @@ public struct ChatCompletion: GPTModel {
         let result = try decoder
             .decode(ChatCompletionResponseBody.self, from: data)
         
-        Log.generativeAgent
-            .trace("Tokens 􁾨\(result.usage.promptTokens) 􁾬\(result.usage.completionTokens)")
+        log.trace("Tokens 􁾨\(result.usage.promptTokens) 􁾬\(result.usage.completionTokens)")
         
         guard let responseMessage = result.choices.first?.message else {
             throw Error.invalidResponse
         }
+        
+        log.trace("GPT Response: \(responseMessage.content)")
 
         return ChatMessage(role: .model, content: .text(responseMessage.content))
+    }
+}
+
+extension GPTModel where Self == ChatCompletion {
+    static func chat(apiKey: String, model: ChatGPTModel) -> ChatCompletion {
+        ChatCompletion(apiKey: apiKey, model: model)
     }
 }
 

@@ -54,15 +54,9 @@ public final class GenerativeAgent: ObservableObject {
     
     public func updateHistory(with message: ChatMessage? = nil) async throws {
         if let historyModel = model as? HistoryManagedGPTModel {
-            let newHistory = try await historyModel.fetchHistory()
-
-            await MainActor.run {
-                history = newHistory
-            }
+            history = try await historyModel.fetchHistory()
         } else if let message {
-            await MainActor.run {
-                history.append(message)
-            }
+            history.append(message)
         }
     }
 }

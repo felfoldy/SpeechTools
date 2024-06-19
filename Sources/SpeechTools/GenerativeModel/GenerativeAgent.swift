@@ -18,6 +18,16 @@ public struct ChatMessage {
     public enum Role: String {
         case user, model
     }
+    
+    public init(role: Role, content: MessageContent) {
+        self.role = role
+        self.content = content
+    }
+    
+    public init(_ role: Role, _ content: String) {
+        self.role = role
+        self.content = .text(content)
+    }
 }
 
 public protocol GPTModel {

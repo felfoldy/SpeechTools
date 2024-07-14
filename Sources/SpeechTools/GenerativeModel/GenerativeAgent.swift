@@ -61,12 +61,14 @@ public protocol HistoryManagedGPTModel: GPTModel {
 @MainActor
 public final class GenerativeAgent: ObservableObject {
     public var model: GPTModel
-    let instructions: String
-
+    public var isLoggingEnabled: Bool = true
+    
     @Published
     public var history: [ChatMessage]
-
+    
     public private(set) var usage: [GPTUsage] = []
+    
+    let instructions: String
     
     public init(model: GPTModel, instructions: String, history: [ChatMessage] = []) {
         self.model = model
@@ -82,6 +84,8 @@ public final class GenerativeAgent: ObservableObject {
         
         usage.append(result.usage)
 
+        logResult(message: result.message)
+
         try await updateHistory(with: result.message)
         return result.message
     }
@@ -92,5 +96,21 @@ public final class GenerativeAgent: ObservableObject {
         } else if let message {
             history.append(message)
         }
+    }
+    
+    private func logResult(message: ChatMessage) {
+        guard isLoggingEnabled else { return }
+        let log = Log.generativeAgent
+
+        log.trace("GPT Response: \(message.text)")
+        
+        let promptTokens = self.usage
+            .map(\.promptTokens)
+            .reduce(0, +)
+        let completionTokens = self.usage
+            .map(\.completionTokens)
+            .reduce(0, +)
+        
+        log.trace("Total tokens: ↑\(promptTokens) ↓\(completionTokens)")
     }
 }

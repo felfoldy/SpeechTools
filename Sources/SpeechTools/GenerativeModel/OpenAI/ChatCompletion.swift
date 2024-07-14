@@ -30,16 +30,10 @@ struct ChatCompletionRequestBody: Encodable {
 
 struct ChatCompletionResponseBody: Decodable {
     let choices: [Choice]
-    let usage: Usage
+    let usage: GPTUsage
     
     struct Choice: Decodable {
         let message: ChatGPTMessage
-    }
-    
-    struct Usage: Decodable {
-        let promptTokens: Int
-        let completionTokens: Int
-        let totalTokens: Int
     }
 }
 
@@ -54,7 +48,7 @@ public struct ChatCompletion: GPTModel {
         self.model = model
     }
     
-    public func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage {
+    public func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> GPTResponse {
         let url = URL(string: endpoint)!
         var request = URLRequest(url: url)
 
@@ -94,15 +88,14 @@ public struct ChatCompletion: GPTModel {
         let result = try decoder
             .decode(ChatCompletionResponseBody.self, from: data)
         
-        log.trace("Tokens 􁾨\(result.usage.promptTokens) 􁾬\(result.usage.completionTokens)")
-        
         guard let responseMessage = result.choices.first?.message else {
             throw Error.invalidResponse
         }
-        
-        log.trace("GPT Response: \(responseMessage.content)")
 
-        return ChatMessage(role: .model, content: .text(responseMessage.content))
+        let message = ChatMessage(role: .model,
+                                  content: .text(responseMessage.content))
+        
+        return GPTResponse(message: message, usage: result.usage)
     }
 }
 

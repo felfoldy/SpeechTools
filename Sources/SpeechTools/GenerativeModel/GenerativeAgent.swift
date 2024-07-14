@@ -30,8 +30,28 @@ public struct ChatMessage {
     }
 }
 
+public extension ChatMessage {
+    var text: String {
+        switch content {
+        case let .text(text):
+            return text
+        }
+    }
+}
+
+public struct GPTUsage: Decodable {
+    public let promptTokens: Int
+    public let completionTokens: Int
+}
+
+
+public struct GPTResponse {
+    let message: ChatMessage
+    let usage: GPTUsage
+}
+
 public protocol GPTModel {
-    func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> ChatMessage
+    func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> GPTResponse
 }
 
 public protocol HistoryManagedGPTModel: GPTModel {
@@ -45,6 +65,8 @@ public final class GenerativeAgent: ObservableObject {
 
     @Published
     public var history: [ChatMessage]
+
+    public private(set) var usage: [GPTUsage] = []
     
     public init(model: GPTModel, instructions: String, history: [ChatMessage] = []) {
         self.model = model
@@ -57,9 +79,11 @@ public final class GenerativeAgent: ObservableObject {
         let result = try await model
             .fetchResponse(instructions: instructions,
                            history: history)
+        
+        usage.append(result.usage)
 
-        try await updateHistory(with: result)
-        return result
+        try await updateHistory(with: result.message)
+        return result.message
     }
     
     public func updateHistory(with message: ChatMessage? = nil) async throws {

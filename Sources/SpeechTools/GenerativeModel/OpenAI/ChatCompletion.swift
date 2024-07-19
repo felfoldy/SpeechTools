@@ -11,7 +11,17 @@ private let log = Log.generativeAgent
 
 public enum ChatGPTModel: String, Codable {
     case gpt3_5 = "gpt-3.5-turbo"
-    case gpt4 = "gpt-4o"
+    case gpt4o = "gpt-4o"
+    case gpt4o_mini = "gpt-4o-mini"
+}
+
+public extension ChatGPTModel {
+    static let gpt4 = gpt4o
+
+    /// gpt-4o-mini
+    static let small = gpt4o_mini
+    /// gpt-4o
+    static let large = gpt4o
 }
 
 struct ChatGPTMessage: Codable {
@@ -96,12 +106,6 @@ public struct ChatCompletion: GPTModel {
                                   content: .text(responseMessage.content))
         
         return GPTResponse(message: message, usage: result.usage)
-    }
-}
-
-public extension GPTModel where Self == ChatCompletion {
-    static func chat(apiKey: String, model: ChatGPTModel) -> ChatCompletion {
-        ChatCompletion(apiKey: apiKey, model: model)
     }
 }
 

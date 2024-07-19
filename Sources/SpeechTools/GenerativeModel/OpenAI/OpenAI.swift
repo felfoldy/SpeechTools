@@ -14,7 +14,7 @@ public struct OpenAI {
         self.apiKey = apiKey
     }
     
-    public func chat(_ model: ChatGPTModel) -> ChatCompletion {
+    public func chat(_ model: ChatGPTModel = .small) -> ChatCompletion {
         ChatCompletion(apiKey: apiKey, model: model)
     }
 }

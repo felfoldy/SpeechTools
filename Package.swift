@@ -12,10 +12,12 @@ let package = Package(
             targets: ["SpeechTools"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/felfoldy/LogTools", branch: "main")
+    ],
     targets: [
         .target(name: "SpeechTools",
-                dependencies: []),
+                dependencies: ["LogTools"]),
         .testTarget(name: "SpeechToolsTests",
                     dependencies: ["SpeechTools"]),
     ]

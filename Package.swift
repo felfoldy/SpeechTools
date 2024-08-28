@@ -13,7 +13,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/felfoldy/LogTools", .upToNextMajor(from: "0.9.0"))
+        .package(url: "https://github.com/felfoldy/LogTools", .upToNextMinor(from: "1.0.1"))
     ],
     targets: [
         .target(name: "SpeechTools",

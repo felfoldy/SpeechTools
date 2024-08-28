@@ -1,0 +1,15 @@
+{
+  "originHash" : "42ad1d2d07d1cf6f3b0b05d9261ab7ec79ee31001cbb062ab25c855e5b761ef2",
+  "pins" : [
+    {
+      "identity" : "logtools",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/felfoldy/LogTools",
+      "state" : {
+        "revision" : "2a928061f9e3246a208e36a8e8227847221aa98c",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -9,19 +9,23 @@ import Foundation
 
 private let log = Log.generativeAgent
 
-public enum ChatGPTModel: String, Codable {
-    case gpt3_5 = "gpt-3.5-turbo"
-    case gpt4o = "gpt-4o"
-    case gpt4o_mini = "gpt-4o-mini"
+public struct ChatGPTModel: Codable, RawRepresentable {
+    public var rawValue: String
+    
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
 }
 
 public extension ChatGPTModel {
-    static let gpt4 = gpt4o
-
-    /// gpt-4o-mini
-    static let small = gpt4o_mini
-    /// gpt-4o
-    static let large = gpt4o
+    static let gpt4_1 = ChatGPTModel(rawValue: "gpt-4.1")
+    static let gpt4o_mini = ChatGPTModel(rawValue: "gpt-4o-mini")
+    static let gpt4_1_mini = ChatGPTModel(rawValue: "gpt-4.1-mini")
+    
+    /// gpt-4.1
+    static let large = gpt4_1
+    /// gpt-4.1-mini
+    static let small = gpt4_1_mini
 }
 
 struct ChatGPTMessage: Codable {

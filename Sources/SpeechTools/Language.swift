@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Language {
+public struct Language: Sendable{
     /// BCP-47 language code.
     public let code: String
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public struct OpenAI {
     let apiKey: String
     

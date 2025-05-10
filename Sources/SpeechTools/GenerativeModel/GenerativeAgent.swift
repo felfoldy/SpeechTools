@@ -7,15 +7,15 @@
 
 import Foundation
 
-public enum MessageContent {
+public enum MessageContent: Sendable {
     case text(String)
 }
 
-public struct ChatMessage {
+public struct ChatMessage: Sendable{
     public let role: Role
     public let content: MessageContent
     
-    public enum Role: String {
+    public enum Role: String, Sendable {
         case user, model
     }
     
@@ -39,17 +39,18 @@ public extension ChatMessage {
     }
 }
 
-public struct GPTUsage: Decodable {
+public struct GPTUsage: Decodable, Sendable {
     public let promptTokens: Int
     public let completionTokens: Int
 }
 
 
-public struct GPTResponse {
+public struct GPTResponse: Sendable {
     let message: ChatMessage
     let usage: GPTUsage
 }
 
+@MainActor
 public protocol GPTModel {
     func fetchResponse(instructions: String, history: [ChatMessage]) async throws -> GPTResponse
 }

@@ -9,7 +9,7 @@ import Foundation
 
 private let log = Log.generativeAgent
 
-public struct ChatGPTModel: Codable, RawRepresentable {
+public struct ChatGPTModel: Codable, RawRepresentable, Sendable {
     public var rawValue: String
     
     public init(rawValue: String) {

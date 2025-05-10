@@ -1,5 +1,4 @@
-// swift-tools-version: 5.10
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -13,7 +12,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/felfoldy/LogTools", .upToNextMinor(from: "1.0.1"))
+        .package(url: "https://github.com/felfoldy/LogTools", from: "1.0.1"),
     ],
     targets: [
         .target(name: "SpeechTools",

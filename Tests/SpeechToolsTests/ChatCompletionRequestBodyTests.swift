@@ -12,7 +12,7 @@ final class ChatCompletionRequestBodyTests: XCTestCase {
     func testEncoding() throws {
         let expectedBody = """
             {
-                "model": "gpt-4o",
+                "model": "gpt-4.1",
                 "messages": [
                   {
                     "role": "system",
@@ -26,7 +26,7 @@ final class ChatCompletionRequestBodyTests: XCTestCase {
             }
         """.data(using: .utf8)!
         
-        let body = ChatCompletionRequestBody(model: .gpt4, messages: [
+        let body = ChatCompletionRequestBody(model: .gpt4_1, messages: [
             ChatGPTMessage(role: .system, content: "You are a helpful assistant."),
             ChatGPTMessage(role: .user, content: "Hello!")
         ])

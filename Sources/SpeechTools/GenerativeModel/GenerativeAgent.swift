@@ -44,7 +44,6 @@ public struct GPTUsage: Decodable, Sendable {
     public let completionTokens: Int
 }
 
-
 public struct GPTResponse: Sendable {
     let message: ChatMessage
     let usage: GPTUsage

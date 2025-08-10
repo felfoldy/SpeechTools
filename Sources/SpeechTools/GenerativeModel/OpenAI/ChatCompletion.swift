@@ -21,11 +21,13 @@ public extension ChatGPTModel {
     static let gpt4_1 = ChatGPTModel(rawValue: "gpt-4.1")
     static let gpt4o_mini = ChatGPTModel(rawValue: "gpt-4o-mini")
     static let gpt4_1_mini = ChatGPTModel(rawValue: "gpt-4.1-mini")
+    static let gpt5 = ChatGPTModel(rawValue: "gpt-5")
+    static let gpt5_mini = ChatGPTModel(rawValue: "gpt-5-mini")
     
-    /// gpt-4.1
-    static let large = gpt4_1
-    /// gpt-4.1-mini
-    static let small = gpt4_1_mini
+    /// gpt-5
+    static let large = gpt5
+    /// gpt-5-mini
+    static let small = gpt5_mini
 }
 
 struct ChatGPTMessage: Codable {

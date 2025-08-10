@@ -10,9 +10,9 @@ import FoundationModels
 
 @Scriptable
 class SessionModel {
-    static func apple() throws -> SessionModel {
+    static func apple(instructions: String) throws -> SessionModel {
         if #available(iOS 26, *) {
-            AppleSessionModel()
+            AppleSessionModel(instructions: instructions)
         } else {
             fatalError("Not implemented")
         }
@@ -25,8 +25,13 @@ protocol RespondingSessionModel {
 
 @Scriptable
 public class LanguageModelSession {
-    var model: SessionModel = try! .apple()
-    var instructions = ""
+    var model: SessionModel
+    var instructions: String
+
+    init(instructions: String) throws {
+        model = try .apple(instructions: instructions)
+        self.instructions = instructions
+    }
 
     func respond(prompt: String) async throws -> String {
         try await (model as! RespondingSessionModel)
@@ -36,8 +41,12 @@ public class LanguageModelSession {
 
 @available(iOS 26, macOS 26.0, *)
 class AppleSessionModel: SessionModel, RespondingSessionModel {
-    let session = FoundationModels.LanguageModelSession()
-    
+    let session: FoundationModels.LanguageModelSession
+
+    init(instructions: String) {
+        session = FoundationModels.LanguageModelSession(instructions: instructions)
+    }
+
     public func respond(prompt: String) async throws -> String {
         let response = try await session.respond(to: prompt)
         return response.content

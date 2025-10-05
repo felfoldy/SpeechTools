@@ -100,7 +100,7 @@ public final class GenerativeAgent: ObservableObject {
     
     private func logResult(message: ChatMessage) {
         guard isLoggingEnabled else { return }
-        let log = Log.generativeAgent
+        let log = Log.languageModel
 
         log.trace("GPT Response: \(message.text)")
         

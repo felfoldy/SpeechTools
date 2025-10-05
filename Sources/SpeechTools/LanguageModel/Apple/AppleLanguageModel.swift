@@ -24,7 +24,7 @@ class AppleLanguageModel: LanguageModel, RespondingSessionModel {
                     response.content = snapshot.content
                 }
             } catch {
-                Log.generativeAgent.fault(error.localizedDescription)
+                Log.languageModel.fault(error.localizedDescription)
             }
             
             response.isFinished = true

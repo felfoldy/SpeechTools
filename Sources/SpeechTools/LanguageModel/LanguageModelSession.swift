@@ -7,48 +7,36 @@
 
 import SwiftPy
 import FoundationModels
+import Foundation
 
+@MainActor
 @Scriptable
-class SessionModel {
-    static func apple(instructions: String) throws -> SessionModel {
-        if #available(iOS 26, *) {
-            AppleSessionModel(instructions: instructions)
-        } else {
-            fatalError("Not implemented")
-        }
+class LanguageModel {
+    static func apple(instructions: String) throws -> LanguageModel {
+        AppleLanguageModel(instructions: instructions)
     }
 }
 
+@MainActor
 protocol RespondingSessionModel {
-    func respond(prompt: String) async throws -> String
+    func respond(prompt: String) -> LanguageModelResponse
 }
 
+@MainActor
 @Scriptable
 public class LanguageModelSession {
-    var model: SessionModel
-    var instructions: String
+    var model: LanguageModel
 
     init(instructions: String) throws {
         model = try .apple(instructions: instructions)
-        self.instructions = instructions
+    }
+    
+    init(_ model: LanguageModel) {
+        self.model = model
     }
 
-    func respond(prompt: String) async throws -> String {
-        try await (model as! RespondingSessionModel)
+    func respond(prompt: String) -> LanguageModelResponse {
+        (model as! RespondingSessionModel)
             .respond(prompt: prompt)
-    }
-}
-
-@available(iOS 26, macOS 26.0, *)
-class AppleSessionModel: SessionModel, RespondingSessionModel {
-    let session: FoundationModels.LanguageModelSession
-
-    init(instructions: String) {
-        session = FoundationModels.LanguageModelSession(instructions: instructions)
-    }
-
-    public func respond(prompt: String) async throws -> String {
-        let response = try await session.respond(to: prompt)
-        return response.content
     }
 }

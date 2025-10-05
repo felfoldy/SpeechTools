@@ -1,10 +1,10 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 
 import PackageDescription
 
 let package = Package(
     name: "SpeechTools",
-    platforms: [.iOS(.v14), .macOS(.v12), .visionOS(.v2)],
+    platforms: [.iOS(.v26), .macOS(.v26), .visionOS(.v26)],
     products: [
         .library(
             name: "SpeechTools",
@@ -12,8 +12,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/felfoldy/LogTools", from: "1.0.1"),
-        .package(url: "https://github.com/felfoldy/SwiftPy", from: "0.12.0"),
+        .package(url: "https://github.com/felfoldy/LogTools", from: "1.1.0"),
+        .package(url: "https://github.com/felfoldy/SwiftPy", from: "0.13.2"),
     ],
     targets: [
         .target(name: "SpeechTools",

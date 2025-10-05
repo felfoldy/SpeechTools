@@ -7,7 +7,7 @@
 
 import Foundation
 
-private let log = Log.generativeAgent
+private let log = Log.languageModel
 
 public struct ChatGPTModel: Codable, RawRepresentable, Sendable {
     public var rawValue: String

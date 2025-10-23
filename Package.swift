@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/felfoldy/LogTools", from: "1.1.0"),
-        .package(url: "https://github.com/felfoldy/SwiftPy", from: "0.13.2"),
+        .package(url: "https://github.com/felfoldy/SwiftPy", from: "0.14.0"),
     ],
     targets: [
         .target(name: "SpeechTools",

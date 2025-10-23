@@ -11,18 +11,12 @@ import DebugTools
 
 @Observable
 @Scriptable
-public class LanguageModelResponse {
+public class LanguageModelResponse: ViewRepresentable {
     public var content: String = ""
     public var isFinished: Bool = false
-}
 
-// MARK: LanguageModelResponse + ViewRepresentation
-
-extension LanguageModelResponse: ViewRepresentable {
-    public var representation: ViewRepresentation {
-        ViewRepresentation {
-            LanguageModelResponseView(model: self)
-        }
+    public var view: some View {
+        LanguageModelResponseView(model: self)
     }
 }
 

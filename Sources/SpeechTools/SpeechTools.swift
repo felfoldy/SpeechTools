@@ -17,7 +17,7 @@ public enum SpeechTools {
         Interpreter.bindModule("speechtools", [
             LanguageModel.self,
             LanguageModelSession.self,
-            LanguageModelResponse.self]
-        )
+            LanguageModelResponse.self
+        ])
     }
 }

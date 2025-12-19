@@ -35,8 +35,16 @@ public class LanguageModelSession {
         self.model = model
     }
 
-    func respond(prompt: String) -> LanguageModelResponse {
-        (model as! RespondingSessionModel)
-            .respond(prompt: prompt)
+    func respond(prompt: String) -> AsyncTask {
+        let response = (model as! RespondingSessionModel).respond(prompt: prompt)
+        
+        return AsyncTask(presenting: response) {
+            let observation = Observations { response.isFinished }
+            for await isFinished in observation {
+                if isFinished { break }
+            }
+
+            return response
+        }
     }
 }

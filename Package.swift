@@ -14,10 +14,11 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/felfoldy/LogTools", from: "1.1.0"),
         .package(url: "https://github.com/felfoldy/SwiftPy", from: "0.14.0"),
+        .package(url: "https://github.com/felfoldy/DebugTools", from: "0.5.2")
     ],
     targets: [
         .target(name: "SpeechTools",
-                dependencies: ["LogTools", "SwiftPy"]),
+                dependencies: ["LogTools", "SwiftPy", "DebugTools"]),
         .testTarget(name: "SpeechToolsTests",
                     dependencies: ["SpeechTools"]),
     ]
